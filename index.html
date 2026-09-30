@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <link rel="manifest" href='data:application/manifest+json,{"name":"Neo Alarm","short_name":"NeoAlarm","start_url":"./","display":"standalone","background_color":"%230a0a0f","theme_color":"%2300f0ff","orientation":"portrait","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Crect width=%27512%27 height=%27512%27 rx=%27100%27 fill=%27%230a0a0f%27/%3E%3Ccircle cx=%27256%27 cy=%27280%27 r=%27140%27 fill=%27none%27 stroke=%27%2300f0ff%27 stroke-width=%2720%27/%3E%3Cpath d=%27M256 180v100l70 40%27 stroke=%27%2300f0ff%27 stroke-width=%2720%27 stroke-linecap=%27round%27 fill=%27none%27/%3E%3C/svg%3E","sizes":"512x512","type":"image/svg+xml"}]}'>
+    <link rel="manifest" href='data:application/manifest+json,{"name":"Neo Alarm","short_name":"NeoAlarm","start_url":"./","display":"standalone","background_color":"%230a0a0f","theme_color":"%2300f0ff","orientation":"portrait"}'>
     
     <title>Neo Alarm</title>
     <style>
@@ -21,13 +21,12 @@
             --accent-neon: #00f0ff;
             --accent-red: #ff3366;
             --accent-green: #00ff88;
+            --accent-orange: #ff9500;
             --glass-blur: blur(16px);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
-        
         html, body { height: 100%; overflow: hidden; }
-
         body {
             background-color: var(--bg-dark);
             background-image: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #0a0a0f 70%);
@@ -39,95 +38,56 @@
         }
 
         #app {
-            width: 100%;
-            max-width: 420px;
-            height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
+            width: 100%; max-width: 420px; height: 100dvh;
+            display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
         }
 
         header {
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-            z-index: 10;
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            flex-shrink: 0; z-index: 10;
         }
         header h1 { font-size: 24px; font-weight: 300; letter-spacing: 1px; }
         header button { background: none; border: none; color: var(--text-main); font-size: 24px; cursor: pointer; opacity: 0.7; transition: 0.3s; padding: 5px;}
         header button:hover { opacity: 1; transform: rotate(90deg); }
 
-        main {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px 20px;
-            position: relative;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
+        main { flex: 1; overflow-y: auto; padding: 10px 20px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         main::-webkit-scrollbar { display: none; }
 
         .tab-content { display: none; height: 100%; flex-direction: column; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: flex; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         nav {
-            display: flex;
-            background: rgba(10, 10, 15, 0.8);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
+            display: flex; background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
             border-top: 1px solid var(--border-glass);
-            padding: 8px 0;
-            padding-bottom: calc(8px + env(safe-area-inset-bottom));
-            flex-shrink: 0;
-            z-index: 100;
+            padding: 8px 0; padding-bottom: calc(8px + env(safe-area-inset-bottom));
+            flex-shrink: 0; z-index: 100;
         }
         nav button {
-            flex: 1;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            transition: 0.3s;
-            padding: 5px 0;
+            flex: 1; background: none; border: none; color: var(--text-muted);
+            font-size: 10px; font-weight: 600; text-transform: uppercase; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            transition: 0.3s; padding: 5px 0;
         }
         nav button.active { color: var(--accent-neon); }
         nav button.active svg { stroke: var(--accent-neon); filter: drop-shadow(0 0 5px var(--accent-neon)); }
         nav button svg { width: 22px; height: 22px; stroke: var(--text-muted); transition: 0.3s; }
 
         .card {
-            background: var(--bg-panel);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: var(--bg-panel); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-glass); border-radius: 16px;
+            padding: 18px; margin-bottom: 12px;
+            display: flex; justify-content: space-between; align-items: center;
             transition: 0.3s;
         }
         .card:active { transform: scale(0.98); }
-
         .card-info { display: flex; flex-direction: column; }
         .card-time { font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -1px;}
         .card-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;}
-        
         .card-actions { display: flex; align-items: center; gap: 15px; }
         .delete-btn { background: none; border: none; color: var(--accent-red); font-size: 18px; cursor: pointer; opacity: 0.7; padding: 5px;}
-        .delete-btn:hover { opacity: 1; }
 
         .switch { position: relative; display: inline-block; width: 52px; height: 30px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -142,19 +102,13 @@
         }
         input:checked + .slider { background-color: var(--accent-green); }
         input:checked + .slider:before { transform: translateX(22px); }
+        #set-extreme:checked + .slider { background-color: var(--accent-orange); box-shadow: 0 0 15px var(--accent-orange); }
 
         .btn {
-            background: var(--accent-neon);
-            color: #000;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background: var(--accent-neon); color: #000; border: none;
+            padding: 12px 24px; border-radius: 12px;
+            font-weight: 700; font-size: 14px; cursor: pointer;
+            transition: 0.2s; text-transform: uppercase; letter-spacing: 1px;
         }
         .btn:active { transform: scale(0.95); box-shadow: 0 0 15px var(--accent-neon); }
         .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border-glass); }
@@ -169,9 +123,7 @@
         .world-clock-city { color: var(--text-muted); font-size: 14px; }
         .world-clock-time { font-weight: 600; font-variant-numeric: tabular-nums; }
 
-        #stopwatch-display, #timer-display {
-            font-size: 56px; text-align: center; margin: 40px 0; font-weight: 200; font-variant-numeric: tabular-nums;
-        }
+        #stopwatch-display, #timer-display { font-size: 56px; text-align: center; margin: 40px 0; font-weight: 200; font-variant-numeric: tabular-nums; }
         .controls { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
         
         .timer-picker { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
@@ -181,24 +133,36 @@
             border: 1px solid var(--border-glass); border-radius: 12px; padding: 10px 0; color: white;
             font-weight: 700; outline: none;
         }
-        .picker-col input:focus { border-color: var(--accent-neon); }
         .picker-col span { font-size: 12px; margin-top: 8px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;}
 
-        .setting-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 18px 0; border-bottom: 1px solid var(--border-glass);
-        }
+        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--border-glass); }
         .setting-info { display: flex; flex-direction: column; max-width: 70%; }
         .setting-title { font-weight: 600; margin-bottom: 6px; font-size: 15px;}
         .setting-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
         .setting-action { color: var(--accent-neon); font-size: 13px; cursor: pointer; padding: 5px 10px; border-radius: 8px; border: 1px solid var(--accent-neon);}
-        .setting-action:active { background: var(--accent-neon); color: #000;}
+
+        .save-indicator {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--accent-green);
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .save-indicator.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            display: none; justify-content: center; align-items: center; z-index: 1000;
-            padding: 20px;
+            display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;
         }
         .modal-overlay.active { display: flex; animation: fadeIn 0.3s; }
         
@@ -215,114 +179,53 @@
             border: 1px solid var(--border-glass); border-radius: 12px; color: white; text-align: center;
             margin-bottom: 25px; outline: none;
         }
-        #add-alarm-modal input[type="time"]:focus { border-color: var(--accent-neon); }
 
-        /* === RINGTONE PICKER MODAL === */
         #ringtone-modal .modal {
-            border: 1px solid var(--accent-neon);
-            box-shadow: 0 0 50px rgba(0, 240, 255, 0.2);
-            max-width: 400px;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            text-align: left;
+            border: 1px solid var(--accent-neon); box-shadow: 0 0 50px rgba(0, 240, 255, 0.2);
+            max-width: 400px; max-height: 85vh; display: flex; flex-direction: column;
+            padding: 20px; text-align: left;
         }
-        #ringtone-modal h3 { 
-            margin-bottom: 15px; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            font-weight: 300;
-            text-align: center;
-            font-size: 16px;
-        }
-        .ringtone-list {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent-neon) transparent;
-        }
+        #ringtone-modal h3 { margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: 300; text-align: center; font-size: 16px; }
+        .ringtone-list { flex: 1; overflow-y: auto; margin-bottom: 15px; scrollbar-width: thin; scrollbar-color: var(--accent-neon) transparent; }
         .ringtone-list::-webkit-scrollbar { width: 4px; }
         .ringtone-list::-webkit-scrollbar-thumb { background: var(--accent-neon); border-radius: 2px; }
-        
         .ringtone-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid transparent;
-            transition: 0.2s;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px; border-radius: 12px; margin-bottom: 8px;
+            background: rgba(255,255,255,0.03); border: 1px solid transparent; transition: 0.2s;
         }
-        .ringtone-item.selected {
-            border-color: var(--accent-neon);
-            background: rgba(0, 240, 255, 0.1);
-        }
-        .ringtone-item:active { background: rgba(255,255,255,0.08); }
-        
+        .ringtone-item.selected { border-color: var(--accent-neon); background: rgba(0, 240, 255, 0.1); }
         .ringtone-info { display: flex; flex-direction: column; flex: 1; }
         .ringtone-name { font-size: 14px; font-weight: 600; }
         .ringtone-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        
         .ringtone-play {
-            background: var(--accent-neon);
-            color: #000;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            margin-left: 10px;
-            transition: 0.2s;
-            flex-shrink: 0;
+            background: var(--accent-neon); color: #000; border: none;
+            width: 36px; height: 36px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; margin-left: 10px; transition: 0.2s; flex-shrink: 0;
         }
-        .ringtone-play:active { transform: scale(0.9); }
         .ringtone-play.playing { background: var(--accent-red); color: white; }
-        
         .custom-upload {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 14px;
-            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 14px; border-radius: 12px;
             border: 1px dashed var(--accent-neon);
-            color: var(--accent-neon);
-            cursor: pointer;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: 0.2s;
+            color: var(--accent-neon); cursor: pointer;
+            margin-bottom: 8px; font-size: 14px; font-weight: 600;
         }
-        .custom-upload:active { background: rgba(0, 240, 255, 0.1); }
         .custom-upload input { display: none; }
 
-        /* Alarm trigger full screen */
-        #trigger-alarm-modal {
-            background: linear-gradient(135deg, #ff0044 0%, #660022 100%);
-            padding: 0;
-        }
+        #trigger-alarm-modal { background: linear-gradient(135deg, #ff0044 0%, #660022 100%); padding: 0; }
         #trigger-alarm-modal .modal {
             background: transparent; border: none; box-shadow: none;
             width: 100%; height: 100%; max-width: 100%;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center; padding: 30px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px;
         }
         #trigger-alarm-modal h2 { 
             font-size: 96px; margin-bottom: 20px; color: #fff; 
             text-shadow: 0 0 30px rgba(255,255,255,0.8);
             animation: pulse 1s infinite;
         }
-        #trigger-alarm-modal p { 
-            margin-bottom: 50px; color: rgba(255,255,255,0.9); 
-            font-size: 24px; text-transform: uppercase; letter-spacing: 3px;
-        }
+        #trigger-alarm-modal p { margin-bottom: 50px; color: rgba(255,255,255,0.9); font-size: 24px; text-transform: uppercase; letter-spacing: 3px; }
         .alarm-buttons { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 320px; }
         .stop-btn {
             background: #fff; color: #ff0044; border: none;
@@ -332,15 +235,12 @@
             box-shadow: 0 0 40px rgba(255,255,255,0.5);
             animation: shake 0.5s infinite;
         }
-        .stop-btn:active { transform: scale(0.95); }
         .snooze-btn {
             background: rgba(255,255,255,0.2); color: #fff;
             border: 2px solid #fff; padding: 20px; border-radius: 20px;
             font-size: 18px; font-weight: 700; text-transform: uppercase;
             letter-spacing: 2px; cursor: pointer;
         }
-        .snooze-btn:active { transform: scale(0.95); }
-        
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -368,6 +268,8 @@
         <path d="M19 3l3 3"/>
     </svg>
 </div>
+
+<div id="save-indicator" class="save-indicator">💾 Сохранено</div>
 
 <div id="app">
     <header>
@@ -402,15 +304,15 @@
             <div id="timer-display">00:00:00</div>
             <div class="timer-picker" id="timer-picker">
                 <div class="picker-col">
-                    <input type="number" id="timer-h" min="0" max="23" value="0" oninput="validateTime(this)">
+                    <input type="number" id="timer-h" min="0" max="23" value="0">
                     <span>Часы</span>
                 </div>
                 <div class="picker-col">
-                    <input type="number" id="timer-m" min="0" max="59" value="0" oninput="validateTime(this)">
+                    <input type="number" id="timer-m" min="0" max="59" value="0">
                     <span>Минуты</span>
                 </div>
                 <div class="picker-col">
-                    <input type="number" id="timer-s" min="0" max="59" value="0" oninput="validateTime(this)">
+                    <input type="number" id="timer-s" min="0" max="59" value="0">
                     <span>Секунды</span>
                 </div>
             </div>
@@ -423,7 +325,6 @@
         <div id="tab-settings" class="tab-content">
             <h2 style="margin-bottom: 25px; font-weight: 300;">Настройки</h2>
             
-            <!-- RINGTONE SELECTION -->
             <div class="setting-item" style="cursor: pointer;" onclick="openRingtonePicker()">
                 <div class="setting-info">
                     <span class="setting-title">🔔 Рингтон будильника</span>
@@ -434,32 +335,40 @@
             
             <div class="setting-item">
                 <div class="setting-info">
+                    <span class="setting-title">🔥 Экстремальная громкость</span>
+                    <span class="setting-desc">Максимальное усиление с компрессией</span>
+                </div>
+                <label class="switch"><input type="checkbox" id="set-extreme" onchange="toggleExtreme(this)"><span class="slider"></span></label>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
                     <span class="setting-title">Вибрировать вместе с сигналом</span>
                     <span class="setting-desc">Непрерывно, пока не нажмёшь СТОП</span>
                 </div>
-                <label class="switch"><input type="checkbox" id="set-vibrate" checked><span class="slider"></span></label>
+                <label class="switch"><input type="checkbox" id="set-vibrate" onchange="saveAllSettings()"><span class="slider"></span></label>
             </div>
             
             <div class="setting-item">
                 <div class="setting-info">
                     <span class="setting-title">Не выключать экран</span>
-                    <span class="setting-desc">Wake Lock — экран не гаснет, пока приложение открыто</span>
+                    <span class="setting-desc">Wake Lock — экран не гаснет</span>
                 </div>
-                <label class="switch"><input type="checkbox" id="set-wakelock" checked><span class="slider"></span></label>
+                <label class="switch"><input type="checkbox" id="set-wakelock" onchange="saveAllSettings()"><span class="slider"></span></label>
             </div>
 
-            <div class="setting-item">
+            <div class="setting-item" style="cursor: pointer;" onclick="forceSaveAll()">
                 <div class="setting-info">
-                    <span class="setting-title">Нарастание громкости</span>
-                    <span class="setting-desc">Звук начинается тихо и достигает максимума за 10 секунд</span>
+                    <span class="setting-title">💾 Сохранить данные</span>
+                    <span class="setting-desc">Принудительно сохранить всё в память</span>
                 </div>
-                <label class="switch"><input type="checkbox" id="set-increase-vol" checked><span class="slider"></span></label>
+                <span class="setting-action">Сохранить</span>
             </div>
 
             <div class="setting-item" style="border: none;">
                 <div class="setting-info">
                     <span class="setting-title">Проверка будильника</span>
-                    <span class="setting-desc">Интервал: 1 секунда (максимум для веба)</span>
+                    <span class="setting-desc">Интервал: 1 секунда</span>
                 </div>
                 <span style="font-size: 12px; color: var(--accent-neon);">Активно</span>
             </div>
@@ -485,7 +394,6 @@
         </button>
     </nav>
 
-    <!-- MODAL ADD ALARM -->
     <div class="modal-overlay" id="add-alarm-modal">
         <div class="modal">
             <h3>Новый будильник</h3>
@@ -497,7 +405,6 @@
         </div>
     </div>
 
-    <!-- MODAL RINGTONE PICKER -->
     <div class="modal-overlay" id="ringtone-modal">
         <div class="modal">
             <h3>🔔 Выбор рингтона</h3>
@@ -512,7 +419,6 @@
         </div>
     </div>
 
-    <!-- MODAL ALARM TRIGGERED -->
     <div class="modal-overlay" id="trigger-alarm-modal">
         <div class="modal">
             <h2 id="trigger-time">07:00</h2>
@@ -526,40 +432,115 @@
 </div>
 
 <script>
-    // === SERVICE WORKER ===
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            const swCode = `self.addEventListener('install',e=>{self.skipWaiting()});self.addEventListener('activate',e=>{self.clients.claim()});self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)))});`;
-            const blob = new Blob([swCode], { type: 'application/javascript' });
-            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(e => console.log('SW fail:', e));
+    // ============================================================
+    // === STORAGE MANAGER (IndexedDB + localStorage с дублированием)
+    // ============================================================
+    const DB_NAME = 'NeoAlarmDB';
+    const DB_VERSION = 3;
+    const STORE_DATA = 'appData';
+    const STORE_AUDIO = 'audio';
+
+    let db = null;
+    let dbReady = false;
+
+    function initDB() {
+        return new Promise((resolve, reject) => {
+            const req = indexedDB.open(DB_NAME, DB_VERSION);
+            
+            req.onupgradeneeded = (e) => {
+                const database = e.target.result;
+                if (!database.objectStoreNames.contains(STORE_DATA)) {
+                    database.createObjectStore(STORE_DATA);
+                }
+                if (!database.objectStoreNames.contains(STORE_AUDIO)) {
+                    database.createObjectStore(STORE_AUDIO);
+                }
+            };
+            
+            req.onsuccess = () => { db = req.result; dbReady = true; resolve(db); };
+            req.onerror = () => { console.error('DB error:', req.error); reject(req.error); };
         });
     }
 
-    // === STATE ===
-    let alarms = JSON.parse(localStorage.getItem('custom_alarms_v4')) || [];
+    async function saveToDB(key, value) {
+        if (!dbReady) return false;
+        return new Promise((resolve) => {
+            try {
+                const tx = db.transaction(STORE_DATA, 'readwrite');
+                tx.objectStore(STORE_DATA).put(value, key);
+                tx.oncomplete = () => resolve(true);
+                tx.onerror = () => resolve(false);
+            } catch(e) { resolve(false); }
+        });
+    }
+
+    async function loadFromDB(key) {
+        if (!dbReady) return null;
+        return new Promise((resolve) => {
+            try {
+                const tx = db.transaction(STORE_DATA, 'readonly');
+                const req = tx.objectStore(STORE_DATA).get(key);
+                req.onsuccess = () => resolve(req.result !== undefined ? req.result : null);
+                req.onerror = () => resolve(null);
+            } catch(e) { resolve(null); }
+        });
+    }
+
+    // === ДУБЛИРОВАННОЕ СОХРАНЕНИЕ ===
+    // Сохраняет и в IndexedDB, и в localStorage
+    async function persist(key, value) {
+        // localStorage
+        try { localStorage.setItem(key, JSON.stringify(value)); } catch(e) {}
+        // IndexedDB
+        await saveToDB(key, value);
+    }
+
+    // Загружает: сначала IndexedDB, если пусто — localStorage
+    async function retrieve(key, defaultValue) {
+        const fromDB = await loadFromDB(key);
+        if (fromDB !== null && fromDB !== undefined) return fromDB;
+        
+        try {
+            const fromLS = localStorage.getItem(key);
+            if (fromLS) return JSON.parse(fromLS);
+        } catch(e) {}
+        
+        return defaultValue;
+    }
+
+    // Индикатор сохранения
+    function showSaveIndicator() {
+        const el = document.getElementById('save-indicator');
+        el.classList.add('show');
+        setTimeout(() => el.classList.remove('show'), 1500);
+    }
+
+    // ============================================================
+    // === СОСТОЯНИЕ ПРИЛОЖЕНИЯ ===
+    // ============================================================
+    let alarms = [];
     let audioCtx = null;
     let isAlarmRinging = false;
     let vibrationInterval = null;
     let wakeLock = null;
     let lastTriggered = {};
     
-    // Ringtone state
-    let selectedRingtone = localStorage.getItem('selected_ringtone') || 'classic';
+    let selectedRingtone = 'classic';
     let previewOscillators = [];
     let previewInterval = null;
     let customAudioBuffer = null;
-    let customAudioSource = null;
-    let customAudioName = localStorage.getItem('custom_ringtone_name') || '';
+    let customAudioName = '';
     let currentPlayingPreview = null;
+    let extremeVolume = false;
+    let settingVibrate = true;
+    let settingWakelock = true;
 
-    // Stopwatch
     let swInterval = null, swTime = 0, swRunning = false;
-    // Timer
     let timerInterval = null, timerTime = 0, timerRunning = false;
 
-    // === BUILT-IN RINGTONES (synthesized) ===
+    // === RINGTONES ===
     const RINGTONES = {
-        classic:     { name: 'Классический', desc: 'Стандартный будильник', type: 'beep', freqs: [880, 1100], pattern: 'beep-beep-beep' },
+        classic:     { name: 'Классический', desc: 'Стандартный будильник', type: 'beep', freqs: [880, 1100] },
         morning:     { name: 'Утро', desc: 'Мягкий и приятный', type: 'melody', notes: [523, 659, 784, 659, 523, 659, 784, 1047] },
         urgent:      { name: 'Срочный', desc: 'Резкий, для тяжёлых просыпаний', type: 'beep', freqs: [1200, 1400], pattern: 'fast' },
         gentle:      { name: 'Нежный', desc: 'Тихий и плавный', type: 'melody', notes: [440, 523, 659, 523, 440, 392, 440] },
@@ -571,25 +552,42 @@
         heart:       { name: 'Сердце', desc: 'Пульсирующий ритм', type: 'beep', freqs: [60, 80], pattern: 'heart' }
     };
 
-    // === INITIALIZATION ===
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => document.getElementById('splash').classList.add('hidden'), 800);
+    // ============================================================
+    // === ИНИЦИАЛИЗАЦИЯ ===
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', async () => {
+        await initDB();
+        
+        // Загружаем все данные
+        alarms = await retrieve('neo_alarms', []);
+        selectedRingtone = await retrieve('neo_ringtone', 'classic');
+        customAudioName = await retrieve('neo_custom_name', '');
+        extremeVolume = await retrieve('neo_extreme', false);
+        settingVibrate = await retrieve('neo_vibrate', true);
+        settingWakelock = await retrieve('neo_wakelock', true);
+        
+        // Применяем настройки к UI
+        document.getElementById('set-extreme').checked = extremeVolume;
+        document.getElementById('set-vibrate').checked = settingVibrate;
+        document.getElementById('set-wakelock').checked = settingWakelock;
         
         renderAlarms();
         updateClock();
         setInterval(updateClock, 1000);
         startWorldClocks();
+        updateRingtoneDisplay();
         
         if ("Notification" in window && Notification.permission !== "granted") {
             Notification.requestPermission();
         }
 
-        if (document.getElementById('set-wakelock').checked) requestWakeLock();
-
+        if (settingWakelock) requestWakeLock();
         setInterval(checkAlarms, 1000);
         
-        updateRingtoneDisplay();
+        // Загружаем кастомный рингтон из IndexedDB
+        setTimeout(loadCustomRingtone, 1500);
 
+        // Защита от двойного тапа
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function (event) {
             const now = (new Date()).getTime();
@@ -597,22 +595,58 @@
             lastTouchEnd = now;
         }, false);
 
+        // Перезапрашиваем Wake Lock при возврате в приложение
         document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible' && document.getElementById('set-wakelock').checked) {
+            if (document.visibilityState === 'visible' && settingWakelock) {
                 requestWakeLock();
             }
         });
+
+        // Сохраняем всё при сворачивании приложения
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+                forceSaveAll(true); // silent
+            }
+        });
+
+        // Сохраняем всё при закрытии
+        window.addEventListener('beforeunload', () => {
+            forceSaveAll(true);
+        });
+
+        setTimeout(() => document.getElementById('splash').classList.add('hidden'), 800);
     });
+
+    // === ПРИНУДИТЕЛЬНОЕ СОХРАНЕНИЕ ВСЕГО ===
+    async function forceSaveAll(silent = false) {
+        await persist('neo_alarms', alarms);
+        await persist('neo_ringtone', selectedRingtone);
+        await persist('neo_custom_name', customAudioName);
+        await persist('neo_extreme', extremeVolume);
+        await persist('neo_vibrate', settingVibrate);
+        await persist('neo_wakelock', settingWakelock);
+        
+        if (!silent) {
+            showSaveIndicator();
+        }
+        console.log('✅ Все данные сохранены');
+    }
+
+    function saveAllSettings() {
+        settingVibrate = document.getElementById('set-vibrate').checked;
+        settingWakelock = document.getElementById('set-wakelock').checked;
+        persist('neo_vibrate', settingVibrate);
+        persist('neo_wakelock', settingWakelock);
+        showSaveIndicator();
+    }
 
     // === WAKE LOCK ===
     async function requestWakeLock() {
         if (!('wakeLock' in navigator)) return;
-        try {
-            wakeLock = await navigator.wakeLock.request('screen');
-        } catch (err) { console.log('Wake Lock error:', err); }
+        try { wakeLock = await navigator.wakeLock.request('screen'); } catch (err) {}
     }
 
-    // === NAVIGATION ===
+    // === НАВИГАЦИЯ ===
     function switchTab(tabId, btnElement) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.getElementById('tab-' + tabId).classList.add('active');
@@ -629,11 +663,15 @@
         switchTab('settings', settingsBtn);
     }
 
-    function closeModal(modalId) {
-        document.getElementById(modalId).classList.remove('active');
+    function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+
+    function toggleExtreme(checkbox) {
+        extremeVolume = checkbox.checked;
+        persist('neo_extreme', extremeVolume);
+        showSaveIndicator();
     }
 
-    // === ALARM LOGIC ===
+    // === БУДИЛЬНИКИ ===
     function renderAlarms() {
         const list = document.getElementById('alarm-list');
         list.innerHTML = '';
@@ -669,24 +707,26 @@
         document.getElementById('alarm-time-input').value = `${hours}:${mins}`;
     }
 
-    function saveAlarm() {
+    async function saveAlarm() {
         const timeVal = document.getElementById('alarm-time-input').value;
         if (!timeVal) return;
         alarms.push({ time: timeVal, active: true, repeat: false });
-        localStorage.setItem('custom_alarms_v4', JSON.stringify(alarms));
+        await persist('neo_alarms', alarms);
         renderAlarms();
         closeModal('add-alarm-modal');
+        showSaveIndicator();
     }
 
-    function toggleAlarm(index) {
+    async function toggleAlarm(index) {
         alarms[index].active = !alarms[index].active;
-        localStorage.setItem('custom_alarms_v4', JSON.stringify(alarms));
+        await persist('neo_alarms', alarms);
     }
 
-    function deleteAlarm(index) {
+    async function deleteAlarm(index) {
         alarms.splice(index, 1);
-        localStorage.setItem('custom_alarms_v4', JSON.stringify(alarms));
+        await persist('neo_alarms', alarms);
         renderAlarms();
+        showSaveIndicator();
     }
 
     function checkAlarms() {
@@ -710,18 +750,16 @@
         isAlarmRinging = true;
         document.getElementById('trigger-time').innerText = time;
         document.getElementById('trigger-alarm-modal').classList.add('active');
-        
         playAlarmSound();
-        
-        if (document.getElementById('set-vibrate').checked) startInfiniteVibration();
+        if (settingVibrate) startInfiniteVibration();
     }
 
     function stopAlarm() {
         isAlarmRinging = false;
-        if (audioCtx) { try { audioCtx.close(); } catch(e) {} audioCtx = null; }
         if (vibrationInterval) { clearInterval(vibrationInterval); vibrationInterval = null; }
         if (navigator.vibrate) navigator.vibrate(0);
         closeModal('trigger-alarm-modal');
+        if (audioCtx) { try { audioCtx.close(); } catch(e) {} audioCtx = null; }
     }
 
     function snoozeAlarm() {
@@ -733,41 +771,51 @@
         }, 300000);
     }
 
-    // === RINGTONE PLAYBACK ===
+    // === АУДИО ===
+    function createMasterGain() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        
+        const masterGain = audioCtx.createGain();
+        
+        if (extremeVolume) {
+            const compressor = audioCtx.createDynamicsCompressor();
+            compressor.threshold.value = -24;
+            compressor.knee.value = 6;
+            compressor.ratio.value = 12;
+            compressor.attack.value = 0.003;
+            compressor.release.value = 0.25;
+            masterGain.gain.value = 3.0;
+            compressor.connect(masterGain);
+            masterGain.connect(audioCtx.destination);
+            return compressor;
+        } else {
+            masterGain.gain.value = 0.9;
+            masterGain.connect(audioCtx.destination);
+            return masterGain;
+        }
+    }
+
     function playAlarmSound() {
         const ringtone = RINGTONES[selectedRingtone];
-        
-        // If user uploaded custom MP3
-        if (selectedRingtone === 'custom' && customAudioBuffer && audioCtx) {
-            customAudioSource = audioCtx.createBufferSource();
-            customAudioSource.buffer = customAudioBuffer;
-            customAudioSource.loop = true;
-            customAudioSource.connect(audioCtx.destination);
-            customAudioSource.start();
+        if (selectedRingtone === 'custom' && customAudioBuffer) {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const inputNode = createMasterGain();
+            const source = audioCtx.createBufferSource();
+            source.buffer = customAudioBuffer;
+            source.loop = true;
+            source.connect(inputNode);
+            source.start();
             return;
         }
-
-        if (!ringtone) {
-            // Fallback: classic beep
-            playSynthBeep([880, 1100], 'beep-beep-beep');
-            return;
-        }
-
+        if (!ringtone) { playSynthBeep([880, 1100], 'beep'); return; }
         if (ringtone.type === 'beep') playSynthBeep(ringtone.freqs, ringtone.pattern);
         else if (ringtone.type === 'melody') playSynthMelody(ringtone.notes);
         else if (ringtone.type === 'sweep') playSynthSweep(ringtone.freqs);
     }
 
     function playSynthBeep(freqs, pattern) {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        
-        const masterGain = audioCtx.createGain();
-        masterGain.connect(audioCtx.destination);
-        const increaseVol = document.getElementById('set-increase-vol').checked;
-        masterGain.gain.setValueAtTime(increaseVol ? 0.1 : 0.9, audioCtx.currentTime);
-        if (increaseVol) masterGain.gain.linearRampToValueAtTime(0.9, audioCtx.currentTime + 10);
-
+        const inputNode = createMasterGain();
         const beepDuration = pattern === 'fast' ? 0.1 : pattern === 'digital' ? 0.15 : 0.25;
         const gapDuration = pattern === 'fast' ? 0.1 : pattern === 'digital' ? 0.05 : 0.15;
         const cycle = beepDuration + gapDuration;
@@ -779,10 +827,10 @@
                 const gain = audioCtx.createGain();
                 osc.type = 'square';
                 osc.frequency.value = freq;
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.setValueAtTime(extremeVolume ? 0.5 : 0.3, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + beepDuration);
                 osc.connect(gain);
-                gain.connect(masterGain);
+                gain.connect(inputNode);
                 osc.start();
                 osc.stop(audioCtx.currentTime + beepDuration);
             });
@@ -790,28 +838,19 @@
     }
 
     function playSynthMelody(notes) {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        
-        const masterGain = audioCtx.createGain();
-        masterGain.connect(audioCtx.destination);
-        const increaseVol = document.getElementById('set-increase-vol').checked;
-        masterGain.gain.setValueAtTime(increaseVol ? 0.1 : 0.9, audioCtx.currentTime);
-        if (increaseVol) masterGain.gain.linearRampToValueAtTime(0.9, audioCtx.currentTime + 10);
-
+        const inputNode = createMasterGain();
         const noteDuration = 0.3;
         let noteIndex = 0;
-        
         const melodyInterval = setInterval(() => {
             if (!isAlarmRinging || !audioCtx) { clearInterval(melodyInterval); return; }
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'sine';
             osc.frequency.value = notes[noteIndex % notes.length];
-            gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+            gain.gain.setValueAtTime(extremeVolume ? 0.6 : 0.4, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + noteDuration);
             osc.connect(gain);
-            gain.connect(masterGain);
+            gain.connect(inputNode);
             osc.start();
             osc.stop(audioCtx.currentTime + noteDuration);
             noteIndex++;
@@ -819,23 +858,14 @@
     }
 
     function playSynthSweep(freqs) {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        
-        const masterGain = audioCtx.createGain();
-        masterGain.connect(audioCtx.destination);
-        const increaseVol = document.getElementById('set-increase-vol').checked;
-        masterGain.gain.setValueAtTime(increaseVol ? 0.1 : 0.9, audioCtx.currentTime);
-        if (increaseVol) masterGain.gain.linearRampToValueAtTime(0.9, audioCtx.currentTime + 10);
-
+        const inputNode = createMasterGain();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
         osc.connect(gain);
-        gain.connect(masterGain);
-        gain.gain.value = 0.5;
+        gain.connect(inputNode);
+        gain.gain.value = extremeVolume ? 0.8 : 0.5;
         osc.start();
-        
         const sweepInterval = setInterval(() => {
             if (!isAlarmRinging || !audioCtx) { clearInterval(sweepInterval); return; }
             osc.frequency.setValueAtTime(freqs[0], audioCtx.currentTime);
@@ -854,11 +884,10 @@
         }, 5000);
     }
 
-    // === RINGTONE PICKER ===
+    // === РИНГТОНЫ ===
     function openRingtonePicker() {
         const list = document.getElementById('ringtone-list');
         list.innerHTML = '';
-        
         Object.keys(RINGTONES).forEach(key => {
             const rt = RINGTONES[key];
             const isSelected = selectedRingtone === key;
@@ -873,8 +902,6 @@
             `;
             list.appendChild(item);
         });
-        
-        // Show custom if exists
         if (customAudioBuffer) {
             const isSelected = selectedRingtone === 'custom';
             const item = document.createElement('div');
@@ -888,21 +915,18 @@
             `;
             list.appendChild(item);
         }
-        
         document.getElementById('ringtone-modal').classList.add('active');
-        loadCustomRingtone(); // try to load existing
+        loadCustomRingtone();
     }
 
-    function closeRingtoneModal() {
-        stopPreview();
-        document.getElementById('ringtone-modal').classList.remove('active');
-    }
+    function closeRingtoneModal() { stopPreview(); document.getElementById('ringtone-modal').classList.remove('active'); }
 
-    function selectRingtone(key) {
+    async function selectRingtone(key) {
         selectedRingtone = key;
-        localStorage.setItem('selected_ringtone', key);
+        await persist('neo_ringtone', key);
         updateRingtoneDisplay();
-        openRingtonePicker(); // refresh selection
+        openRingtonePicker();
+        showSaveIndicator();
     }
 
     function updateRingtoneDisplay() {
@@ -914,31 +938,22 @@
         }
     }
 
-    // === PREVIEW ===
     function togglePreview(key, btn) {
-        if (currentPlayingPreview === key) {
-            stopPreview();
-            return;
-        }
+        if (currentPlayingPreview === key) { stopPreview(); return; }
         stopPreview();
         currentPlayingPreview = key;
         btn.classList.add('playing');
         btn.innerText = '■';
-        
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        
-        const previewGain = audioCtx.createGain();
-        previewGain.gain.value = 0.3;
-        previewGain.connect(audioCtx.destination);
+        const inputNode = createMasterGain();
         
         if (key === 'custom' && customAudioBuffer) {
             const source = audioCtx.createBufferSource();
             source.buffer = customAudioBuffer;
             source.loop = true;
-            source.connect(previewGain);
+            source.connect(inputNode);
             source.start();
             previewOscillators.push({ stop: () => source.stop() });
+            setTimeout(() => { if (currentPlayingPreview === key) stopPreview(); }, 5000);
             return;
         }
         
@@ -947,62 +962,56 @@
         
         if (rt.type === 'beep') {
             const beepDur = 0.2, gapDur = 0.15;
-            const interval = setInterval(() => {
-                if (currentPlayingPreview !== key) { clearInterval(interval); return; }
+            previewInterval = setInterval(() => {
+                if (currentPlayingPreview !== key) { clearInterval(previewInterval); return; }
                 rt.freqs.forEach(freq => {
                     const osc = audioCtx.createOscillator();
                     const gain = audioCtx.createGain();
                     osc.type = 'square';
                     osc.frequency.value = freq;
-                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(extremeVolume ? 0.5 : 0.3, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + beepDur);
                     osc.connect(gain);
-                    gain.connect(previewGain);
+                    gain.connect(inputNode);
                     osc.start();
                     osc.stop(audioCtx.currentTime + beepDur);
                 });
             }, (beepDur + gapDur) * 1000);
-            previewInterval = interval;
         } else if (rt.type === 'melody') {
             const noteDur = 0.3;
             let idx = 0;
-            const interval = setInterval(() => {
-                if (currentPlayingPreview !== key) { clearInterval(interval); return; }
+            previewInterval = setInterval(() => {
+                if (currentPlayingPreview !== key) { clearInterval(previewInterval); return; }
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'sine';
                 osc.frequency.value = rt.notes[idx % rt.notes.length];
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.setValueAtTime(extremeVolume ? 0.6 : 0.4, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + noteDur);
                 osc.connect(gain);
-                gain.connect(previewGain);
+                gain.connect(inputNode);
                 osc.start();
                 osc.stop(audioCtx.currentTime + noteDur);
                 idx++;
             }, noteDur * 1000);
-            previewInterval = interval;
         } else if (rt.type === 'sweep') {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'sine';
-            gain.gain.value = 0.3;
+            gain.gain.value = extremeVolume ? 0.8 : 0.5;
             osc.connect(gain);
-            gain.connect(previewGain);
+            gain.connect(inputNode);
             osc.start();
-            const sweepInterval = setInterval(() => {
-                if (currentPlayingPreview !== key) { clearInterval(sweepInterval); return; }
+            previewInterval = setInterval(() => {
+                if (currentPlayingPreview !== key) { clearInterval(previewInterval); return; }
                 osc.frequency.setValueAtTime(rt.freqs[0], audioCtx.currentTime);
                 osc.frequency.linearRampToValueAtTime(rt.freqs[1], audioCtx.currentTime + 1);
                 osc.frequency.linearRampToValueAtTime(rt.freqs[0], audioCtx.currentTime + 2);
             }, 2000);
-            previewInterval = sweepInterval;
             previewOscillators.push({ stop: () => osc.stop() });
         }
         
-        // Auto-stop after 5 seconds
-        setTimeout(() => {
-            if (currentPlayingPreview === key) stopPreview();
-        }, 5000);
+        setTimeout(() => { if (currentPlayingPreview === key) stopPreview(); }, 5000);
     }
 
     function stopPreview() {
@@ -1016,86 +1025,60 @@
         });
     }
 
-    // === CUSTOM RINGTONE UPLOAD ===
+    // === ЗАГРУЗКА СВОЕГО MP3 ===
     function handleRingtoneUpload(event) {
         const file = event.target.files[0];
         if (!file) return;
-        
-        if (file.size > 10 * 1024 * 1024) {
-            alert('Файл слишком большой. Максимум 10 МБ.');
-            return;
-        }
+        if (file.size > 10 * 1024 * 1024) { alert('Файл слишком большой. Максимум 10 МБ.'); return; }
         
         customAudioName = file.name;
-        localStorage.setItem('custom_ringtone_name', customAudioName);
-        
         const reader = new FileReader();
         reader.onload = async (e) => {
             try {
                 if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const arrayBuffer = e.target.result;
-                customAudioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-                
-                // Save to IndexedDB (localStorage too small for audio)
+                customAudioBuffer = await audioCtx.decodeAudioData(arrayBuffer.slice(0));
                 await saveAudioToIndexedDB(arrayBuffer, file.type);
-                
+                await persist('neo_custom_name', customAudioName);
                 selectedRingtone = 'custom';
-                localStorage.setItem('selected_ringtone', 'custom');
+                await persist('neo_ringtone', 'custom');
                 updateRingtoneDisplay();
                 openRingtonePicker();
+                showSaveIndicator();
                 alert('✅ Рингтон загружен: ' + customAudioName);
             } catch (err) {
-                console.error('Ошибка декодирования:', err);
-                alert('Не удалось загрузить файл. Убедитесь, что это аудио.');
+                console.error(err);
+                alert('Не удалось загрузить файл.');
             }
         };
         reader.readAsArrayBuffer(file);
     }
 
-    // === INDEXEDDB FOR CUSTOM AUDIO ===
-    function openDB() {
-        return new Promise((resolve, reject) => {
-            const req = indexedDB.open('NeoAlarmDB', 1);
-            req.onupgradeneeded = () => {
-                const db = req.result;
-                if (!db.objectStoreNames.contains('audio')) {
-                    db.createObjectStore('audio');
-                }
-            };
-            req.onsuccess = () => resolve(req.result);
-            req.onerror = () => reject(req.error);
-        });
-    }
-
     async function saveAudioToIndexedDB(arrayBuffer, mimeType) {
+        if (!dbReady) return;
         try {
-            const db = await openDB();
-            const tx = db.transaction('audio', 'readwrite');
-            tx.objectStore('audio').put({ buffer: arrayBuffer, type: mimeType }, 'custom');
-        } catch(e) { console.log('IndexedDB save error:', e); }
+            const tx = db.transaction(STORE_AUDIO, 'readwrite');
+            tx.objectStore(STORE_AUDIO).put({ buffer: arrayBuffer, type: mimeType }, 'custom');
+        } catch(e) { console.error(e); }
     }
 
     async function loadCustomRingtone() {
-        if (customAudioBuffer) return; // already loaded
+        if (customAudioBuffer || !dbReady) return;
         try {
-            const db = await openDB();
-            const tx = db.transaction('audio', 'readonly');
-            const req = tx.objectStore('audio').get('custom');
+            const tx = db.transaction(STORE_AUDIO, 'readonly');
+            const req = tx.objectStore(STORE_AUDIO).get('custom');
             req.onsuccess = async () => {
                 if (req.result && req.result.buffer) {
                     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    try {
-                        customAudioBuffer = await audioCtx.decodeAudioData(req.result.buffer);
-                    } catch(e) { console.log('Decode error:', e); }
+                    try { 
+                        customAudioBuffer = await audioCtx.decodeAudioData(req.result.buffer.slice(0)); 
+                    } catch(e) { console.error('Decode error:', e); }
                 }
             };
-        } catch(e) { console.log('IndexedDB load error:', e); }
+        } catch(e) { console.error(e); }
     }
 
-    // Try to load custom audio on startup
-    setTimeout(loadCustomRingtone, 2000);
-
-    // === CLOCK ===
+    // === ЧАСЫ ===
     function updateClock() {
         const now = new Date();
         const timeStr = now.toLocaleTimeString('ru-RU');
@@ -1110,10 +1093,8 @@
     function startWorldClocks() {
         const container = document.getElementById('world-clocks');
         const cities = [
-            { name: 'Москва', offset: 3 },
-            { name: 'Лондон', offset: 0 },
-            { name: 'Нью-Йорк', offset: -5 },
-            { name: 'Токио', offset: 9 }
+            { name: 'Москва', offset: 3 }, { name: 'Лондон', offset: 0 },
+            { name: 'Нью-Йорк', offset: -5 }, { name: 'Токио', offset: 9 }
         ];
         function render() {
             const now = new Date();
@@ -1128,25 +1109,19 @@
         setInterval(render, 10000);
     }
 
-    // === STOPWATCH ===
+    // === СЕКУНДОМЕР ===
     function toggleStopwatch() {
         const btn = document.getElementById('stopwatch-btn');
         if (swRunning) {
-            clearInterval(swInterval);
-            swRunning = false;
+            clearInterval(swInterval); swRunning = false;
             btn.innerText = 'Старт';
-            btn.classList.remove('btn-danger');
-            btn.classList.add('btn');
+            btn.classList.remove('btn-danger'); btn.classList.add('btn');
         } else {
             swRunning = true;
             btn.innerText = 'Пауза';
-            btn.classList.remove('btn');
-            btn.classList.add('btn-danger');
+            btn.classList.remove('btn'); btn.classList.add('btn-danger');
             const startTime = Date.now() - swTime;
-            swInterval = setInterval(() => {
-                swTime = Date.now() - startTime;
-                updateStopwatchDisplay();
-            }, 10);
+            swInterval = setInterval(() => { swTime = Date.now() - startTime; updateStopwatchDisplay(); }, 10);
         }
     }
 
@@ -1159,34 +1134,21 @@
     }
 
     function resetStopwatch() {
-        clearInterval(swInterval);
-        swRunning = false;
-        swTime = 0;
+        clearInterval(swInterval); swRunning = false; swTime = 0;
         updateStopwatchDisplay();
         const btn = document.getElementById('stopwatch-btn');
         btn.innerText = 'Старт';
-        btn.classList.remove('btn-danger');
-        btn.classList.add('btn');
+        btn.classList.remove('btn-danger'); btn.classList.add('btn');
     }
 
-    // === TIMER ===
-    function validateTime(input) {
-        let val = parseInt(input.value);
-        if (isNaN(val)) input.value = 0;
-        const max = parseInt(input.max);
-        if (val > max) input.value = max;
-        if (val < 0) input.value = 0;
-    }
-
+    // === ТАЙМЕР ===
     function toggleTimer() {
         const btn = document.getElementById('timer-btn');
         const picker = document.getElementById('timer-picker');
         if (timerRunning) {
-            clearInterval(timerInterval);
-            timerRunning = false;
+            clearInterval(timerInterval); timerRunning = false;
             btn.innerText = 'Старт';
-            btn.classList.remove('btn-danger');
-            btn.classList.add('btn');
+            btn.classList.remove('btn-danger'); btn.classList.add('btn');
             picker.style.display = 'flex';
         } else {
             if (timerTime === 0) {
@@ -1199,15 +1161,11 @@
             timerRunning = true;
             picker.style.display = 'none';
             btn.innerText = 'Пауза';
-            btn.classList.remove('btn');
-            btn.classList.add('btn-danger');
+            btn.classList.remove('btn'); btn.classList.add('btn-danger');
             timerInterval = setInterval(() => {
                 if (timerTime <= 0) {
-                    clearInterval(timerInterval);
-                    timerRunning = false;
-                    triggerAlarm('Таймер');
-                    resetTimer();
-                    return;
+                    clearInterval(timerInterval); timerRunning = false;
+                    triggerAlarm('Таймер'); resetTimer(); return;
                 }
                 timerTime--;
                 updateTimerDisplay();
@@ -1224,21 +1182,18 @@
     }
 
     function resetTimer() {
-        clearInterval(timerInterval);
-        timerRunning = false;
-        timerTime = 0;
+        clearInterval(timerInterval); timerRunning = false; timerTime = 0;
         updateTimerDisplay();
         const btn = document.getElementById('timer-btn');
         btn.innerText = 'Старт';
-        btn.classList.remove('btn-danger');
-        btn.classList.add('btn');
+        btn.classList.remove('btn-danger'); btn.classList.add('btn');
         document.getElementById('timer-picker').style.display = 'flex';
         document.getElementById('timer-h').value = 0;
         document.getElementById('timer-m').value = 0;
         document.getElementById('timer-s').value = 0;
     }
 
-    // === UNLOCK AUDIO ON FIRST INTERACTION ===
+    // === UNLOCK AUDIO ===
     document.addEventListener('touchstart', function unlock() {
         if (!audioCtx) {
             try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); } catch(e) {}
